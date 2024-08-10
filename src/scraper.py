@@ -17,7 +17,7 @@ def get_last_page(playwright: "Playwright") -> str:
 
     page.goto(URL.format(page=1))
     # Search for li with class "l-pagination__page"
-    page.wait_for_selector("li.l-pagination__page")
+    page.wait_for_selector("li.l-pagination__page", timeout=10000)
     lis = page.query_selector_all("li.l-pagination__page")
     li = lis[-1]
     last_page = li.inner_text()
@@ -36,7 +36,7 @@ def get_posts(playwright: "Playwright", last_page: str) -> list[Post]:
     page.goto(URL.format(page=last_page))
 
     # Find second div with class "l-articlePage"
-    page.wait_for_selector("div.l-articlePage")
+    page.wait_for_selector("div.l-articlePage", timeout=10000)
     articles = page.query_selector_all("div.l-articlePage")
 
     posts: list[Post] = []
