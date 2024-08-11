@@ -30,5 +30,6 @@ def main(playwright: Playwright) -> None:
 
 
 if __name__ == "__main__":
+    logger.add("log.log", rotation="1 day", retention="7 days", level="INFO")
     with sync_playwright() as playwright:
         main(playwright)
