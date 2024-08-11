@@ -1,15 +1,14 @@
 # type: ignore[reportOptionalMemberAccess]
 from __future__ import annotations
 
-from typing import TYPE_CHECKING, Final
+from typing import TYPE_CHECKING
 
+from .constants import AUTHOR_NAME, PAGE_URL
 from .schema import Post
 
 if TYPE_CHECKING:
     from playwright.sync_api import Playwright
 
-AUTHOR: Final[str] = "連人帶車100KG還騎超快"
-URL: Final[str] = "https://www.mobile01.com/topicdetail.php?f=291&t=5077716&p={page}"
 
 
 def get_last_page(playwright: Playwright) -> str:
@@ -17,7 +16,7 @@ def get_last_page(playwright: Playwright) -> str:
     browser = chromium.launch(headless=False)
     page = browser.new_page()
 
-    page.goto(URL.format(page=1))
+    page.goto(PAGE_URL.format(page=1))
     # Search for li with class "l-pagination__page"
     page.wait_for_selector("li.l-pagination__page", timeout=10000)
     lis = page.query_selector_all("li.l-pagination__page")
@@ -35,7 +34,7 @@ def get_posts(playwright: Playwright, last_page: str) -> list[Post]:
     page = browser.new_page()
 
     # Go to last page
-    page.goto(URL.format(page=last_page))
+    page.goto(PAGE_URL.format(page=last_page))
 
     # Find second div with class "l-articlePage"
     page.wait_for_selector("div.l-articlePage", timeout=10000)
@@ -49,7 +48,7 @@ def get_posts(playwright: Playwright, last_page: str) -> list[Post]:
             .query_selector("div.c-authorInfo__id")
             .inner_text()
         )
-        if author_name != AUTHOR:
+        if author_name != AUTHOR_NAME:
             continue
 
         # Find div with class "l-articlePage__publish"
