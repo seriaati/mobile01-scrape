@@ -1,4 +1,6 @@
 # type: ignore[reportOptionalMemberAccess]
+from __future__ import annotations
+
 from typing import TYPE_CHECKING, Final
 
 from .schema import Post
@@ -10,7 +12,7 @@ AUTHOR: Final[str] = "連人帶車100KG還騎超快"
 URL: Final[str] = "https://www.mobile01.com/topicdetail.php?f=291&t=5077716&p={page}"
 
 
-def get_last_page(playwright: "Playwright") -> str:
+def get_last_page(playwright: Playwright) -> str:
     chromium = playwright.chromium
     browser = chromium.launch(headless=False)
     page = browser.new_page()
@@ -27,7 +29,7 @@ def get_last_page(playwright: "Playwright") -> str:
     return last_page
 
 
-def get_posts(playwright: "Playwright", last_page: str) -> list[Post]:
+def get_posts(playwright: Playwright, last_page: str) -> list[Post]:
     chromium = playwright.chromium
     browser = chromium.launch(headless=False)
     page = browser.new_page()
