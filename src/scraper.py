@@ -51,6 +51,9 @@ def get_posts(playwright: Playwright, last_page: str) -> list[Post]:
         if author_name != AUTHOR_NAME:
             continue
 
+        article_tag = article.query_selector("article")
+        post_id = article_tag.get_attribute("id").split("_")[-1]
+
         # Find div with class "l-articlePage__publish"
         div_publish = article.query_selector("div.l-articlePage__publish")
         content = div_publish.query_selector("article")
@@ -64,9 +67,8 @@ def get_posts(playwright: Playwright, last_page: str) -> list[Post]:
         div_navigation = div_publish.query_selector("div.l-navigation__item")
         spans = div_navigation.query_selector_all("span")
         posted_at = spans[0].inner_text()
-        post_id = spans[1].inner_text()
 
-        posts.append(Post(id=post_id, content=content, posted_at=posted_at))
+        posts.append(Post(id=post_id, content=content, posted_at=posted_at, page=last_page))
 
     browser.close()
 
