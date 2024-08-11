@@ -1,3 +1,5 @@
+import time
+
 from dotenv import load_dotenv
 from loguru import logger
 from playwright.sync_api import Playwright, sync_playwright
@@ -30,6 +32,8 @@ def main(playwright: Playwright) -> None:
 
 
 if __name__ == "__main__":
+    start = time.time()
     logger.add("log.log", rotation="1 day", retention="7 days", level="INFO")
     with sync_playwright() as playwright:
         main(playwright)
+    logger.info(f"Execution time: {time.time() - start:.2f} seconds")
