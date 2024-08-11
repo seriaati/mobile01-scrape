@@ -7,14 +7,21 @@ from .constants import AUTHOR_NAME, PAGE_URL
 from .schema import Post
 
 if TYPE_CHECKING:
-    from playwright.sync_api import Playwright
+    from playwright.sync_api import Playwright, Route
 
+
+def block_ads(route: Route) -> None:
+    if route.request.resource_type == "image" and "ad" in route.request.url:
+        route.abort()
+    else:
+        route.continue_()
 
 
 def get_last_page(playwright: Playwright) -> str:
     chromium = playwright.chromium
     browser = chromium.launch(headless=False)
     page = browser.new_page()
+    page.route("**/*", block_ads)
 
     page.goto(PAGE_URL.format(page=1))
     # Search for li with class "l-pagination__page"
@@ -32,6 +39,7 @@ def get_posts(playwright: Playwright, last_page: str) -> list[Post]:
     chromium = playwright.chromium
     browser = chromium.launch(headless=False)
     page = browser.new_page()
+    page.route("**/*", block_ads)
 
     # Go to last page
     page.goto(PAGE_URL.format(page=last_page))
