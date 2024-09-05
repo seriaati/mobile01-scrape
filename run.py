@@ -26,7 +26,7 @@ def main(playwright: Playwright) -> None:
     logger.info(f"Saved {len(saved_posts)} posts")
 
     for post in saved_posts:
-        line_notify(f"\n發布於: {post.posted_at}\n{post.content or '無內容'}\n\n{post.url}")
+        line_notify(f"\n{post.url}\n發布於: {post.posted_at}\n{post.content or '無內容'}")
 
     logger.info("Scraping finished")
 
