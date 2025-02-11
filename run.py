@@ -6,7 +6,7 @@ from playwright.sync_api import Playwright, sync_playwright
 
 from src.database import load_posts, save_posts
 from src.scraper import get_last_page, get_posts
-from src.utils import line_notify
+from src.utils import send_webhook
 
 
 def main(playwright: Playwright) -> None:
@@ -26,7 +26,7 @@ def main(playwright: Playwright) -> None:
     logger.info(f"Saved {len(saved_posts)} posts")
 
     for post in saved_posts:
-        line_notify(f"\n{post.url}\n發布於: {post.posted_at}\n{post.content or '無內容'}")
+        send_webhook(f"\n{post.url}\n發布於: {post.posted_at}\n{post.content or '無內容'}")
 
     logger.info("Scraping finished")
 
