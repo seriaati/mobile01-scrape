@@ -26,7 +26,9 @@ def main(playwright: Playwright) -> None:
     logger.info(f"Saved {len(saved_posts)} posts")
 
     for post in saved_posts:
-        send_webhook(f"\n{post.url}\n發布於: {post.posted_at}\n{post.content or '無內容'}")
+        send_webhook(
+            f"\n{post.url}\n發布於: {post.posted_at}\n{post.content[:500] + '...' or '無內容'}"
+        )
 
     logger.info("Scraping finished")
 
