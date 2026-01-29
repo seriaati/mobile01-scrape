@@ -9,4 +9,5 @@ def send_webhook(message: str) -> None:
         msg = "WEBHOOK_URL is not set"
         raise ValueError(msg)
 
-    requests.post(webhook_url, data={"content": message}, timeout=5)
+    r = requests.post(webhook_url, data={"content": message}, timeout=5)
+    r.raise_for_status()
